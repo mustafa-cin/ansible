@@ -1,0 +1,9 @@
+namespace: devops-demo
+
+gateway_image_repository: demo/gateway
+gateway_image_tag: v0.1.0
+
+processor_image_repository: demo/processor
+processor_image_tag: v0.1.0
+
+redis_image: redis:7-alpine

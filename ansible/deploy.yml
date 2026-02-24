@@ -1,0 +1,23 @@
+---
+- name: Deploy microservices stack to Kubernetes
+  hosts: local
+  gather_facts: false
+
+  tasks:
+    - name: Create namespace
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: "{{ namespace }}"
+
+    - name: Apply rendered manifests
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('template', item) | from_yaml_all | list }}"
+      loop:
+        - "{{ playbook_dir }}/../k8s/templates/redis.yml.j2"
+        - "{{ playbook_dir }}/../k8s/templates/gateway.yml.j2"
+        - "{{ playbook_dir }}/../k8s/templates/processor.yml.j2"
